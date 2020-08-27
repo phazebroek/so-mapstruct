@@ -4,6 +4,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 /**
+ * Example to demonstrate a mapstruct mapper with multiple source arguments to a single target.
+ * This code complements an answer provided on StackOverflow: https://stackoverflow.com/a/52168618/1546042
+ *
  * @author Pim Hazebroek
  */
 @SuppressWarnings("ALL")
@@ -11,6 +14,9 @@ public class MapStructDemo {
 
     private static OneMapper mapper = Mappers.getMapper(OneMapper.class);
 
+    /**
+     * Runs the demo.
+     */
     public static void main(String[] args) {
         One one = new One(1, 10, 100, "one");
         boolean qualified = checkQualified(one, 10, 100, "one");
@@ -20,17 +26,30 @@ public class MapStructDemo {
     }
 
     static void testMapperOneDtoIsQualified(One one, Boolean isQualified) {
-        OneDto oneDto = mapper.toOneDto(one, isQualified);
+        OneDto oneDto = mapper.createOneDto(one, isQualified);
         System.out.println("id=[" + oneDto.id + "], qualified=[" + oneDto.isQualified() + "]");
     }
 
+    /**
+     * Checks if the given arguments are qualified for the given one. In order to be qualified, the projId, val and code must match with one
+     * (ignoring case).
+     *
+     * @return true if the projId, val and code matches with the values of one, false otherwise.
+     */
     static boolean checkQualified(One one, int projId, int val, String code) {
         return one.getProjectId() == projId && one.getVal() == val && one.getCode().equalsIgnoreCase(code);
     }
 
     @Mapper
     public interface OneMapper {
-        OneDto toOneDto(One one, Boolean qualified);
+
+        /**
+         * Create an instance of OneDto.
+         * @param one the one.
+         * @param qualified wether the OneDto is qualified or not.
+         * @return the mapped OneDto instance.
+         */
+        OneDto createOneDto(One one, Boolean qualified);
     }
 
     static class OneDto {
