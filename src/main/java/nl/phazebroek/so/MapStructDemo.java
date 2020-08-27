@@ -12,45 +12,45 @@ public class MapStructDemo {
     private static OneMapper mapper = Mappers.getMapper(OneMapper.class);
 
     public static void main(String[] args) {
-        var one = new One(1, 10, 100, "one");
-        var qualified = checkQualified(one, 10, 100, "one");
-        var notQualified = checkQualified(one, 10, 100, "two");
-        testMapperOneDtoIsQualified(one, qualified);
-        testMapperOneDtoIsQualified(one, notQualified);
+        One one = new One(1, 10, 100, "one");
+        boolean qualified = checkQualified(one, 10, 100, "one");
+        boolean notQualified = checkQualified(one, 10, 100, "two");
+        testMapperOneDtoIsQualified(one, qualified); // prints: id=[1], qualified=[true]
+        testMapperOneDtoIsQualified(one, notQualified); // prints: id=[1], qualified=[false]
     }
 
     static void testMapperOneDtoIsQualified(One one, Boolean isQualified) {
-        var oneDto = mapper.toOneDto(one, isQualified);
+        OneDto oneDto = mapper.toOneDto(one, isQualified);
         System.out.println("id=[" + oneDto.id + "], qualified=[" + oneDto.isQualified() + "]");
     }
 
-    static Boolean checkQualified(One one, Integer projId, Integer val, String code) {
-        return one.getProjectId().equals(projId) && one.getVal().equals(val) && one.getCode().equalsIgnoreCase(code);
+    static boolean checkQualified(One one, int projId, int val, String code) {
+        return one.getProjectId() == projId && one.getVal() == val && one.getCode().equalsIgnoreCase(code);
     }
 
     @Mapper
-    interface OneMapper {
+    public interface OneMapper {
         OneDto toOneDto(One one, Boolean qualified);
     }
 
     static class OneDto {
 
-        private Integer id;
+        private int id;
         private boolean qualified;
 
         public OneDto() {
         }
 
-        public OneDto(Integer id, boolean qualified) {
+        public OneDto(int id, boolean qualified) {
             this.id = id;
             this.qualified = qualified;
         }
 
-        public Integer getId() {
+        public int getId() {
             return id;
         }
 
-        public void setId(Integer id) {
+        public void setId(int id) {
             this.id = id;
         }
 
@@ -65,39 +65,39 @@ public class MapStructDemo {
 
     static class One {
 
-        private Integer id;
-        private Integer projectId;
-        private Integer val;
+        private int id;
+        private int projectId;
+        private int val;
         private String code;
 
-        public One(Integer id, Integer projectId, Integer val, String code) {
+        public One(int id, int projectId, int val, String code) {
             this.id = id;
             this.projectId = projectId;
             this.val = val;
             this.code = code;
         }
 
-        public Integer getId() {
+        public int getId() {
             return id;
         }
 
-        public void setId(Integer id) {
+        public void setId(int id) {
             this.id = id;
         }
 
-        public Integer getProjectId() {
+        public int getProjectId() {
             return projectId;
         }
 
-        public void setProjectId(Integer projectId) {
+        public void setProjectId(int projectId) {
             this.projectId = projectId;
         }
 
-        public Integer getVal() {
+        public int getVal() {
             return val;
         }
 
-        public void setVal(Integer val) {
+        public void setVal(int val) {
             this.val = val;
         }
 
